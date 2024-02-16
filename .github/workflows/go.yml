@@ -15,16 +15,19 @@ jobs:
         with:
           go-version: "1.22" # Change this to your desired Go version
 
-      - name: Install gocover-cobertura
-        run: go get github.com/boumenot/gocover-cobertura
-
       - name: Build
         run: go build -v ./...
 
+      - name: Install gocover-cobertura
+        run: go install gocover-cobertura
+
       - name: Test
-        run:
-          go test -coverprofile=coverage.xml ./...
-          # go test -coverprofile=coverage-mux.out -covermode=count github.com/gorilla/mux
+        run: |
+          go test -coverprofile=coverage.out ./...
+           go test -coverprofile=coverage-mux.out -covermode=count github.com/gorilla/mux
+
+      - name: Convert coverage to Cobertura format
+        run: gocover-cobertura < coverage.out > coverage.xml
 
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
@@ -46,12 +49,3 @@ jobs:
         with:
           recreate: true
           path: code-coverage-results.md
-
-      # - name: Convert coverage to Cobertura format
-      #   run: gocover-cobertura < coverage.out > coverage.xml
-
-      # - name: Upload coverage report
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: coverage-report
-      #     path: coverage.xml
