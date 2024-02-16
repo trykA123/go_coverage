@@ -15,14 +15,16 @@ jobs:
         with:
           go-version: "1.22" # Change this to your desired Go version
 
-      - name: Install dependencies
-        run: go get -v -t -d ./...
+      - name: Install gocover-cobertura
+        run: go get github.com/boumenot/gocover-cobertura
 
       - name: Build
         run: go build -v ./...
 
       - name: Test
-        run: go test -coverprofile=coverage.out ./...
+        run:
+          go test -coverprofile=coverage.out ./...
+          # go test -coverprofile=coverage-mux.out -covermode=count github.com/gorilla/mux
 
       - name: Convert coverage to Cobertura format
         run: gocover-cobertura < coverage.out > coverage.xml
