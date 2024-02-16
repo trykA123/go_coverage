@@ -27,11 +27,16 @@ jobs:
 
       - name: Test
         run: |
-          go test -coverprofile=coverage.out ./...
-           go test -coverprofile=coverage-mux.out -covermode=count github.com/gorilla/mux
+          go test -coverprofile=coverage-hello.out ./...
+          go test -coverprofile=coverage-mux.out -covermode=count github.com/gorilla/mux
+          # Merge coverage profiles
+          go tool cover -html=coverage-hello.out -o merged-hello.html
+          go tool cover -html=coverage-mux.out -o merged-mux.html
+          go tool cover -func=coverage-hello.out > merged-coverage.txt
+          go tool cover -func=coverage-mux.out >> merged-coverage.txt
 
-      - name: Convert coverage to Cobertura format
-        run: gocover-cobertura < coverage.out > coverage.xml
+      - name: Convert merged coverage to Cobertura format
+        run: gocover-cobertura < merged-coverage.txt > coverage.xml
 
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
