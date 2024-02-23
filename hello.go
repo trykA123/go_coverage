@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	myutil "go_coverage/myutil"
 )
 
@@ -16,7 +17,6 @@ type Person struct {
 func increment(p *int) {
 	*p++
 }
-
 func main() {
 	fmt.Println(myutil.Add(2, 3))
 	fmt.Println(myutil.Subtract(5, 2))
