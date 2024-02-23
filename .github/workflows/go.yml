@@ -65,7 +65,7 @@ jobs:
         run: |
           curl -X POST "${{ secrets.INFLUXDB_URL }}/api/v2/write?org=${{ secrets.INFLUXDB_ORG }}&bucket=${{ secrets.INFLUXDB_BUCKET }}&precision=s" \
           -H "Authorization: Token ${{ secrets.INFLUXDB_TOKEN }}" \
-          --data-raw "code_coverage,repository=${GITHUB_REPOSITORY},branch=${{ github.ref_name }},project_type=${secrets.PROJECT_TYPE},commit_author=${{ github.actor }} action_url=\"${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}\", coverage=${{ steps.get_coverage.outputs.coverage }}"
+          --data-raw "code_coverage,repository=${GITHUB_REPOSITORY},branch=${{ github.ref_name }},project_type=${{secrets.PROJECT_TYPE}},commit_author=${{ github.actor }} action_url=\"${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}\", coverage=${{ steps.get_coverage.outputs.coverage }}"
 
       # - name: Code Coverage Report
       #   uses: irongut/CodeCoverageSummary@v1.3.0
